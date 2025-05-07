@@ -9,7 +9,7 @@ import '@expo/metro-runtime';
 function HomeScreen() {
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.heading}>Welcome to CareerBooster!</Text>
+      <Text style={styles.heading}>Welcome back to CareerBooster!</Text>
       <Text style={styles.paragraph}>Get personalized skill analysis and course recommendations tailored to your profile.</Text>
     </SafeAreaView>
   );

@@ -2,6 +2,19 @@
     "version": "0.2.0",
     "configurations": [
       {
+        "name": "Debug in Exponent",
+        "type": "reactnative",
+        "request": "launch",
+        "platform": "exponent",
+        "cwd": "${workspaceFolder}"
+      },
+      {
+        "name": "Attach to Expo",
+        "type": "reactnative",
+        "request": "attach",
+        "cwd": "${workspaceFolder}"
+      },
+      {
         "name": "Run on iOS Simulator",
         "type": "reactnative",
         "request": "launch",
@@ -13,12 +26,6 @@
         "type": "reactnative",
         "request": "launch",
         "platform": "android",
-        "cwd": "${workspaceFolder}"
-      },
-      {
-        "name": "Attach to Expo",
-        "type": "reactnative",
-        "request": "attach",
         "cwd": "${workspaceFolder}"
       }
     ]
