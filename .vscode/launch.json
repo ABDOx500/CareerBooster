@@ -1,0 +1,26 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "name": "Run on iOS Simulator",
+        "type": "reactnative",
+        "request": "launch",
+        "platform": "ios",
+        "cwd": "${workspaceFolder}"
+      },
+      {
+        "name": "Run on Android Emulator",
+        "type": "reactnative",
+        "request": "launch",
+        "platform": "android",
+        "cwd": "${workspaceFolder}"
+      },
+      {
+        "name": "Attach to Expo",
+        "type": "reactnative",
+        "request": "attach",
+        "cwd": "${workspaceFolder}"
+      }
+    ]
+  }
+  
