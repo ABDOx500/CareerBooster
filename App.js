@@ -90,7 +90,7 @@ function useAuth() {
 // --- Home Screen ---
 function HomeScreen({ navigation }) {
   // Mock data for analysis 
-  const matchScore = 90;
+  const matchScore = 85;
   const missing = ['Project Management', 'Python', 'SEO'];
   const enhancements = ['Tailor experience to project-based roles'];
   
@@ -103,16 +103,14 @@ function HomeScreen({ navigation }) {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.dashboardHeader}>
-        <View style={styles.logoContainer}>
-          <Text style={styles.logo}>CareerBooster</Text>
-        </View>
-        <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
-          <View style={styles.headerProfileIcon}>
-            <Ionicons name="person-circle-outline" size={32} color={COLORS.white} />
-          </View>
-        </TouchableOpacity>
-      </View>
+            <View style={styles.dashboardHeader}>        
+              <View style={styles.logoContainer}>          
+                <Image source={require('./Images/cAREERbOOSTER.png')} style={styles.logoImage} />        
+              </View>        <TouchableOpacity onPress={() => navigation.navigate('Profile')}>          
+              <View style={styles.headerProfileIcon}>            
+                <Ionicons name="person-circle-outline" size={32} color={COLORS.white} />          
+              </View>        </TouchableOpacity>      
+            </View>
       
       <ScrollView style={styles.content}>
         <Text style={styles.greeting}>Hello, John!</Text>
@@ -167,12 +165,21 @@ function HomeScreen({ navigation }) {
           </View>
         ))}
         
-        <TouchableOpacity 
-          style={[styles.button, {marginVertical: 20}]} 
-          onPress={() => navigation.navigate('Career')}
-        >
-          <Text style={styles.buttonText}>Upload a New CV</Text>
-        </TouchableOpacity>
+        <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+          <TouchableOpacity 
+            style={[styles.button, {marginVertical: 20, flex: 0.48}]} 
+            onPress={() => navigation.navigate('Career')}
+          >
+            <Text style={styles.buttonText}>Analyze CV</Text>
+          </TouchableOpacity>
+          
+          <TouchableOpacity 
+            style={[styles.button, {marginVertical: 20, flex: 0.48}]} 
+            onPress={() => navigation.navigate('CVBuilder')}
+          >
+            <Text style={styles.buttonText}>Build CV</Text>
+          </TouchableOpacity>
+        </View>
       </ScrollView>
     </SafeAreaView>
   );
@@ -190,11 +197,7 @@ function UploadScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
-        <View style={styles.logoContainer}>
-          <Text style={styles.logo}>Upload CV</Text>
-        </View>
-      </View>
+            <View style={styles.header}>        <View style={styles.logoContainer}>          <Image source={require('./Images/cAREERbOOSTER.png')} style={styles.logoImage} />          <Text style={styles.subtitle}>CV Analysis</Text>        </View>      </View>
       <View style={styles.content}>
         <TouchableOpacity style={styles.uploadBox} onPress={pickFile}>
           <Ionicons name="cloud-upload-outline" size={48} color={COLORS.primary} />
@@ -219,6 +222,180 @@ function UploadScreen() {
   );
 }
 
+// --- CV Builder Screen ---
+function CVGenerationScreen({ navigation }) {
+  const [personalInfo, setPersonalInfo] = useState({
+    name: 'John Doe',
+    email: 'johndoe@example.com',
+    phone: '+1 123 456 7890',
+    title: 'Software Engineer',
+    summary: 'Experienced software engineer with 5+ years in web and mobile development.'
+  });
+  
+  const [skills, setSkills] = useState([
+    'JavaScript', 'React', 'Node.js', 'Python', 'UX/UI Design'
+  ]);
+  
+  const [newSkill, setNewSkill] = useState('');
+  const [fileName, setFileName] = useState('');
+
+  const addSkill = () => {
+    if (newSkill.trim()) {
+      setSkills([...skills, newSkill.trim()]);
+      setNewSkill('');
+    }
+  };
+  
+  const removeSkill = (index) => {
+    const updatedSkills = [...skills];
+    updatedSkills.splice(index, 1);
+    setSkills(updatedSkills);
+  };
+
+  const pickFile = () => {
+    // TODO: integrate react-native-document-picker
+    setFileName('example_cv.pdf');
+  };
+
+  // Templates for CV
+  const templates = [
+    { id: '1', name: 'Professional', color: COLORS.primary },
+    { id: '2', name: 'Creative', color: COLORS.accent },
+    { id: '3', name: 'Modern', color: COLORS.darkBlue }
+  ];
+
+  return (
+    <SafeAreaView style={styles.container}>
+            <View style={styles.header}>        <View style={styles.logoContainer}>          <Image source={require('./Images/cAREERbOOSTER.png')} style={styles.logoImage} />          <Text style={styles.subtitle}>CV Builder</Text>        </View>      </View>
+      <ScrollView style={styles.content}>
+        <Text style={styles.subtitle}>Personal Information</Text>
+        
+        <View style={styles.card}>
+          <View style={styles.inputContainer}>
+            <Text style={styles.inputLabel}>Full Name</Text>
+            <View style={styles.inputWrapper}>
+              <Ionicons name="person-outline" size={20} color={COLORS.gray} style={styles.inputIcon} />
+              <TextInput
+                style={styles.input}
+                placeholder="Enter your full name"
+                value={personalInfo.name}
+                onChangeText={(text) => setPersonalInfo({...personalInfo, name: text})}
+              />
+            </View>
+          </View>
+          
+          <View style={styles.inputContainer}>
+            <Text style={styles.inputLabel}>Professional Title</Text>
+            <View style={styles.inputWrapper}>
+              <Ionicons name="briefcase-outline" size={20} color={COLORS.gray} style={styles.inputIcon} />
+              <TextInput
+                style={styles.input}
+                placeholder="e.g. Software Engineer"
+                value={personalInfo.title}
+                onChangeText={(text) => setPersonalInfo({...personalInfo, title: text})}
+              />
+            </View>
+          </View>
+          
+          <View style={styles.inputContainer}>
+            <Text style={styles.inputLabel}>Email</Text>
+            <View style={styles.inputWrapper}>
+              <Ionicons name="mail-outline" size={20} color={COLORS.gray} style={styles.inputIcon} />
+              <TextInput
+                style={styles.input}
+                placeholder="Enter your email"
+                value={personalInfo.email}
+                onChangeText={(text) => setPersonalInfo({...personalInfo, email: text})}
+                keyboardType="email-address"
+                autoCapitalize="none"
+              />
+            </View>
+          </View>
+          
+          <View style={styles.inputContainer}>
+            <Text style={styles.inputLabel}>Phone</Text>
+            <View style={styles.inputWrapper}>
+              <Ionicons name="call-outline" size={20} color={COLORS.gray} style={styles.inputIcon} />
+              <TextInput
+                style={styles.input}
+                placeholder="Enter your phone number"
+                value={personalInfo.phone}
+                onChangeText={(text) => setPersonalInfo({...personalInfo, phone: text})}
+                keyboardType="phone-pad"
+              />
+            </View>
+          </View>
+          
+          <View style={styles.inputContainer}>
+            <Text style={styles.inputLabel}>Professional Summary</Text>
+            <TextInput
+              style={styles.textArea}
+              placeholder="Write a short professional summary"
+              value={personalInfo.summary}
+              onChangeText={(text) => setPersonalInfo({...personalInfo, summary: text})}
+              multiline={true}
+              numberOfLines={4}
+            />
+          </View>
+        </View>
+        
+        <Text style={[styles.subtitle, {marginTop: 20}]}>Skills</Text>
+        
+        <View style={styles.card}>
+          <View style={styles.skillsList}>
+            {skills.map((skill, index) => (
+              <View key={index} style={styles.skillTag}>
+                <Text style={styles.skillTagText}>{skill}</Text>
+                <TouchableOpacity onPress={() => removeSkill(index)}>
+                  <Ionicons name="close-circle" size={18} color={COLORS.white} />
+                </TouchableOpacity>
+              </View>
+            ))}
+          </View>
+          
+          <View style={styles.addSkillContainer}>
+            <View style={[styles.inputWrapper, {flex: 1}]}>
+              <TextInput
+                style={styles.input}
+                placeholder="Add a skill"
+                value={newSkill}
+                onChangeText={setNewSkill}
+              />
+            </View>
+            <TouchableOpacity style={styles.addButton} onPress={addSkill}>
+              <Ionicons name="add" size={24} color={COLORS.white} />
+            </TouchableOpacity>
+          </View>
+        </View>
+        
+        <Text style={[styles.subtitle, {marginTop: 20}]}>Choose a Template</Text>
+        
+        <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.templateScroll}>
+          {templates.map(template => (
+            <TouchableOpacity key={template.id} style={styles.templateCard}>
+              <View style={[styles.templatePreview, {backgroundColor: template.color}]} />
+              <Text style={styles.templateName}>{template.name}</Text>
+            </TouchableOpacity>
+          ))}
+        </ScrollView>
+        
+        <TouchableOpacity style={[styles.button, {marginVertical: 20}]}>
+          <Text style={styles.buttonText}>Generate CV</Text>
+        </TouchableOpacity>
+        
+        <TouchableOpacity 
+          style={[styles.button, styles.secondaryButton]} 
+          onPress={pickFile}
+        >
+          <Text style={styles.secondaryButtonText}>
+            {fileName ? `Selected: ${fileName}` : 'Upload Existing CV'}
+          </Text>
+        </TouchableOpacity>
+      </ScrollView>
+    </SafeAreaView>
+  );
+}
+
 // --- Analysis Screen ---
 function AnalysisScreen() {
   // Replace with actual data from API
@@ -228,11 +405,7 @@ function AnalysisScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
-        <View style={styles.logoContainer}>
-          <Text style={styles.logo}>Analysis</Text>
-        </View>
-      </View>
+            <View style={styles.header}>        <View style={styles.logoContainer}>          <Image source={require('./Images/cAREERbOOSTER.png')} style={styles.logoImage} />          <Text style={styles.subtitle}>Analysis</Text>        </View>      </View>
       <View style={styles.content}>
         <View style={styles.card}>
           <Text style={styles.cardHeading}>Match Score</Text>
@@ -276,11 +449,7 @@ function CoursesScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
-        <View style={styles.logoContainer}>
-          <Text style={styles.logo}>Courses</Text>
-        </View>
-      </View>
+            <View style={styles.header}>        <View style={styles.logoContainer}>          <Image source={require('./Images/cAREERbOOSTER.png')} style={styles.logoImage} />          <Text style={styles.subtitle}>Courses</Text>        </View>      </View>
       <View style={styles.content}>
         <Text style={styles.subtitle}>Recommended for you</Text>
         <FlatList
@@ -313,27 +482,11 @@ function ProfileScreen() {
   // Handle case where user might be null briefly during logout transition
   if (!user) {
     return (
-      <SafeAreaView style={styles.container}>
-        <View style={styles.header}>
-          <View style={styles.logoContainer}>
-            <Text style={styles.logo}>Profile</Text>
-          </View>
-        </View>
-        <View style={[styles.content, styles.centerContent]}>
-          <ActivityIndicator size="large" color={COLORS.primary} />
-        </View>
-      </SafeAreaView>
+          <SafeAreaView style={styles.container}>      <View style={styles.header}>        <View style={styles.logoContainer}>          <Image source={require('./Images/cAREERbOOSTER.png')} style={styles.logoImage} />          <Text style={styles.subtitle}>Profile</Text>        </View>      </View>      <View style={[styles.content, styles.centerContent]}>        <ActivityIndicator size="large" color={COLORS.primary} />      </View>    </SafeAreaView>
     );
   }
 
-  return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
-        <View style={styles.logoContainer}>
-          <Text style={styles.logo}>Profile</Text>
-        </View>
-      </View>
-      <ScrollView style={styles.content}>
+    return (    <SafeAreaView style={styles.container}>      <View style={styles.header}>        <View style={styles.logoContainer}>          <Image source={require('./Images/cAREERbOOSTER.png')} style={styles.logoImage} />          <Text style={styles.subtitle}>Profile</Text>        </View>      </View>      <ScrollView style={styles.content}>
         {/* Profile Info Card */}
         <View style={styles.profileCard}>
           <View style={styles.avatarCircle}>
@@ -377,11 +530,11 @@ function ProfileScreen() {
 function UserTypeScreen({ navigation }) {
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
-        <View style={styles.logoContainer}>
-          <Text style={styles.logo}>CareerBooster</Text>
-        </View>
-      </View>
+            <View style={styles.header}>
+              <View style={styles.loginLogoContainer}>
+                <Image source={require('./Images/cAREERbOOSTER.png')} style={styles.loginLogoImage} />
+              </View>
+            </View>
       <ScrollView contentContainerStyle={styles.scrollContent}>
         <Text style={styles.heading}>Welcome to CareerBooster</Text>
         <Text style={styles.paragraph}>Your career development assistant</Text>
@@ -439,10 +592,7 @@ function LoginScreen({ route, navigation }) {
     login(email, password, userType);
   };
 
-  return (
-    <SafeAreaView style={styles.container}>
-      <ScrollView contentContainerStyle={styles.formContainer}>
-        <Text style={styles.formSubtitle}>Sign in to continue</Text>
+    return (    <SafeAreaView style={styles.container}>      <View style={styles.header}>        <View style={styles.loginLogoContainer}>          <Image source={require('./Images/cAREERbOOSTER.png')} style={styles.loginLogoImage} />        </View>      </View>      <ScrollView contentContainerStyle={styles.formContainer}>        <Text style={styles.heading}>Sign In</Text>        <Text style={styles.formSubtitle}>Sign in to continue</Text>
         
         {errorMsg ? (
           <View style={styles.errorContainer}>
@@ -553,11 +703,7 @@ function RegisterScreen({ route, navigation }) {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
-        <View style={styles.loginLogoContainer}>
-          <Text style={[styles.logo, {fontSize: 28}]}>CareerBooster</Text>
-        </View>
-      </View>
+            <View style={styles.header}>        <View style={styles.loginLogoContainer}>          <Image source={require('./Images/cAREERbOOSTER.png')} style={styles.loginLogoImage} />        </View>      </View>
       <ScrollView contentContainerStyle={styles.formContainer}>
         <Text style={styles.heading}>Create Account</Text>
         <Text style={styles.formSubtitle}>Sign up to get started</Text>
@@ -660,7 +806,9 @@ function ConsumerTabNavigator() {
           if (route.name === 'Home') {
             iconName = focused ? 'home' : 'home-outline';
           } else if (route.name === 'Career') {
-            iconName = focused ? 'briefcase' : 'briefcase-outline';
+            iconName = focused ? 'search' : 'search-outline';
+          } else if (route.name === 'CVBuilder') {
+            iconName = focused ? 'document-text' : 'document-text-outline';
           } else if (route.name === 'Courses') {
             iconName = focused ? 'book' : 'book-outline';
           } else if (route.name === 'Profile') {
@@ -675,7 +823,8 @@ function ConsumerTabNavigator() {
       })}
     >
       <Tab.Screen name="Home" component={HomeScreen} />
-      <Tab.Screen name="Career" component={UploadScreen} />
+      <Tab.Screen name="Career" component={UploadScreen} options={{ title: 'Analysis' }} />
+      <Tab.Screen name="CVBuilder" component={CVGenerationScreen} options={{ title: 'CV Builder' }} />
       <Tab.Screen name="Courses" component={CoursesScreen} />
       <Tab.Screen name="Profile" component={ProfileScreen} />
     </Tab.Navigator>
@@ -738,9 +887,9 @@ const styles = StyleSheet.create({
   },
   logo: {
     color: COLORS.white,
-    fontSize: 20,
+    fontSize: 10,
     fontWeight: 'bold',
-    marginLeft: 10,
+    marginLeft: 5,
   },
   content: {
     flex: 1,
@@ -1606,18 +1755,18 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: COLORS.darkGray,
   },
-  // Logo styles for all screens
-  logoContainer: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  // Special larger logo for login/register screens
+    // Logo styles for all screens  logoContainer: {    flex: 1,    alignItems: 'center',    justifyContent: 'center',  },  logoImage: {    width: 180,    height: 45,    resizeMode: 'contain',  },  // Special larger logo for login/register screens
   loginLogoContainer: {
     width: '100%',
     alignItems: 'center',
     justifyContent: 'center',
-    marginVertical: 20,
+    marginVertical: 40,
+  },
+  loginLogoImage: {
+    width: 220,
+    height: 55,
+    resizeMode: 'contain',
+    marginBottom: 20,
   },
   formSubtitle: {
     fontSize: 16,
@@ -1697,6 +1846,61 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.error, // Using error color for sign out
     marginTop: 10,
     marginBottom: 20, // Add some bottom margin
+  },
+  // New styles for the CV Builder
+  skillsList: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    marginBottom: 16,
+  },
+  skillTag: {
+    backgroundColor: COLORS.primary,
+    borderRadius: 20,
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    margin: 4,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  skillTagText: {
+    color: COLORS.white,
+    marginRight: 8,
+    fontSize: 14,
+  },
+  addSkillContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  templateScroll: {
+    marginVertical: 16,
+  },
+  templateCard: {
+    width: 160,
+    marginRight: 16,
+    alignItems: 'center',
+  },
+  templatePreview: {
+    width: 140,
+    height: 180,
+    borderRadius: 8,
+    marginBottom: 8,
+  },
+  templateName: {
+    fontSize: 16,
+    fontWeight: '500',
+    color: COLORS.darkBlue,
+  },
+  secondaryButton: {
+    backgroundColor: COLORS.white,
+    borderWidth: 1,
+    borderColor: COLORS.primary,
+    marginTop: 0,
+    marginBottom: 40,
+  },
+  secondaryButtonText: {
+    color: COLORS.primary,
+    fontSize: 16,
+    fontWeight: '600',
   },
 });
 
