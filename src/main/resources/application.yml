@@ -1,0 +1,9 @@
+spring:
+  servlet:
+    multipart:
+      max-file-size: 5MB
+      max-request-size: 5MB
+
+openrouter:
+  api:
+    key: ${OPENROUTER_API_KEY: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} 

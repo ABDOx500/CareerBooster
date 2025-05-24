@@ -1,0 +1,9 @@
+{
+  "dependencies": {
+    "@react-navigation/bottom-tabs": "^7.3.13",
+    "expo-file-system": "^18.1.10",
+    "react-native": "^0.79.2",
+    "react-native-blob-util": "^0.21.3",
+    "react-native-pdf": "^6.7.7"
+  }
+}
