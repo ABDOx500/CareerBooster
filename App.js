@@ -1,4 +1,4 @@
-import React, { useState, useContext, createContext } from 'react';
+import React, { useState, useContext, createContext, useEffect } from 'react';
 import { SafeAreaView, Text, View, TouchableOpacity, TextInput, Button, FlatList, StyleSheet, StatusBar, ScrollView, Image, ActivityIndicator } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -106,10 +106,12 @@ function HomeScreen({ navigation }) {
             <View style={styles.dashboardHeader}>        
               <View style={styles.logoContainer}>          
                 <Image source={require('./Images/cAREERbOOSTER.png')} style={styles.logoImage} />        
-              </View>        <TouchableOpacity onPress={() => navigation.navigate('Profile')}>          
-              <View style={styles.headerProfileIcon}>            
-                <Ionicons name="person-circle-outline" size={32} color={COLORS.white} />          
-              </View>        </TouchableOpacity>      
+              </View>        
+              <TouchableOpacity onPress={() => navigation.navigate('Profile')}>          
+                <View style={styles.headerProfileIcon}>            
+                  <Ionicons name="person-circle-outline" size={32} color={COLORS.white} />          
+                </View>        
+              </TouchableOpacity>      
             </View>
       
       <ScrollView style={styles.content}>
@@ -197,7 +199,12 @@ function UploadScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
-            <View style={styles.header}>        <View style={styles.logoContainer}>          <Image source={require('./Images/cAREERbOOSTER.png')} style={styles.logoImage} />          <Text style={styles.subtitle}>CV Analysis</Text>        </View>      </View>
+            <View style={styles.header}>
+              <View style={styles.logoContainer}>
+                <Image source={require('./Images/cAREERbOOSTER.png')} style={styles.logoImage} />
+                <Text style={styles.subtitle}>CV Analysis</Text>
+              </View>
+            </View>
       <View style={styles.content}>
         <TouchableOpacity style={styles.uploadBox} onPress={pickFile}>
           <Ionicons name="cloud-upload-outline" size={48} color={COLORS.primary} />
@@ -266,7 +273,12 @@ function CVGenerationScreen({ navigation }) {
 
   return (
     <SafeAreaView style={styles.container}>
-            <View style={styles.header}>        <View style={styles.logoContainer}>          <Image source={require('./Images/cAREERbOOSTER.png')} style={styles.logoImage} />          <Text style={styles.subtitle}>CV Builder</Text>        </View>      </View>
+            <View style={styles.header}>
+              <View style={styles.logoContainer}>
+                <Image source={require('./Images/cAREERbOOSTER.png')} style={styles.logoImage} />
+                <Text style={styles.subtitle}>CV Builder</Text>
+              </View>
+            </View>
       <ScrollView style={styles.content}>
         <Text style={styles.subtitle}>Personal Information</Text>
         
@@ -405,7 +417,12 @@ function AnalysisScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
-            <View style={styles.header}>        <View style={styles.logoContainer}>          <Image source={require('./Images/cAREERbOOSTER.png')} style={styles.logoImage} />          <Text style={styles.subtitle}>Analysis</Text>        </View>      </View>
+            <View style={styles.header}>
+              <View style={styles.logoContainer}>
+                <Image source={require('./Images/cAREERbOOSTER.png')} style={styles.logoImage} />
+                <Text style={styles.subtitle}>Analysis</Text>
+              </View>
+            </View>
       <View style={styles.content}>
         <View style={styles.card}>
           <Text style={styles.cardHeading}>Match Score</Text>
@@ -439,37 +456,762 @@ function AnalysisScreen() {
 }
 
 // --- Courses Screen ---
-function CoursesScreen() {
-  // Replace with real data
-  const data = [
-    { id: '1', title: 'Project Management Fundamentals', provider: 'Coursera', rating: 4.8 },
-    { id: '2', title: 'Python for Data Science', provider: 'DataCamp', rating: 4.7 },
-    { id: '3', title: 'Intro to SEO', provider: 'Udemy', rating: 4.5 }
+function CoursesScreen({ navigation }) {
+  const jobDomains = [
+    { id: '1', title: 'Software Development', icon: 'code-outline' },
+    { id: '2', title: 'Data Science', icon: 'analytics-outline' },
+    { id: '3', title: 'UI/UX Design', icon: 'color-palette-outline' },
+    { id: '4', title: 'Digital Marketing', icon: 'megaphone-outline' },
+    { id: '5', title: 'Project Management', icon: 'briefcase-outline' },
+    { id: '6', title: 'Cybersecurity', icon: 'shield-outline' }
   ];
 
   return (
     <SafeAreaView style={styles.container}>
-            <View style={styles.header}>        <View style={styles.logoContainer}>          <Image source={require('./Images/cAREERbOOSTER.png')} style={styles.logoImage} />          <Text style={styles.subtitle}>Courses</Text>        </View>      </View>
+      <View style={styles.header}>
+        <View style={styles.logoContainer}>
+          <Image source={require('./Images/cAREERbOOSTER.png')} style={styles.logoImage} />
+          <Text style={styles.subtitle}>Career Domains</Text>
+        </View>
+      </View>
       <View style={styles.content}>
-        <Text style={styles.subtitle}>Recommended for you</Text>
+        <Text style={styles.subtitle}>Select a domain to explore top skills</Text>
+        
         <FlatList
-          data={data}
+          data={jobDomains}
           keyExtractor={item => item.id}
+          numColumns={2}
+          columnWrapperStyle={{ justifyContent: 'space-between' }}
           renderItem={({ item }) => (
-            <View style={styles.courseCard}>
-              <View style={styles.courseIconContainer}>
-                <Ionicons name="book-outline" size={30} color={COLORS.white} />
+            <TouchableOpacity 
+              style={styles.domainCard}
+              onPress={() => navigation.navigate('DomainSkills', { domain: item })}
+            >
+              <View style={styles.domainIconContainer}>
+                <Ionicons name={item.icon} size={40} color={COLORS.white} />
               </View>
-              <View style={styles.courseInfo}>
-                <Text style={styles.courseTitle}>{item.title}</Text>
-                <Text style={styles.courseProvider}>{item.provider} • {item.rating}★</Text>
-              </View>
-              <TouchableOpacity style={styles.viewButton}>
-                <Text style={styles.viewButtonText}>View</Text>
-              </TouchableOpacity>
-            </View>
+              <Text style={styles.domainTitle}>{item.title}</Text>
+            </TouchableOpacity>
           )}
         />
+      </View>
+    </SafeAreaView>
+  );
+}
+
+// --- Domain Skills Screen ---
+function DomainSkillsScreen({ route, navigation }) {
+  const { domain } = route.params;
+  const [isLoading, setIsLoading] = useState(false);
+  const [skillsData, setSkillsData] = useState({
+    '1': [
+      { id: '1', name: 'JavaScript', level: 'Essential' },
+      { id: '2', name: 'React', level: 'Recommended' },
+      { id: '3', name: 'Node.js', level: 'Recommended' },
+      { id: '4', name: 'Python', level: 'Valuable' },
+      { id: '5', name: 'Git', level: 'Essential' },
+      { id: '6', name: 'SQL', level: 'Valuable' },
+      { id: '7', name: 'Docker', level: 'Valuable' },
+      { id: '8', name: 'AWS', level: 'Recommended' },
+      { id: '9', name: 'TypeScript', level: 'Valuable' },
+      { id: '10', name: 'GraphQL', level: 'Emerging' },
+    ],
+    '2': [
+      { id: '1', name: 'Python', level: 'Essential' },
+      { id: '2', name: 'R', level: 'Recommended' },
+      { id: '3', name: 'SQL', level: 'Essential' },
+      { id: '4', name: 'Machine Learning', level: 'Essential' },
+      { id: '5', name: 'Data Visualization', level: 'Recommended' },
+      { id: '6', name: 'Statistical Analysis', level: 'Essential' },
+      { id: '7', name: 'Big Data', level: 'Valuable' },
+      { id: '8', name: 'Deep Learning', level: 'Valuable' },
+      { id: '9', name: 'NLP', level: 'Emerging' },
+      { id: '10', name: 'Apache Spark', level: 'Recommended' },
+    ],
+    '3': [
+      { id: '1', name: 'UI Design', level: 'Essential' },
+      { id: '2', name: 'Wireframing', level: 'Essential' },
+      { id: '3', name: 'Prototyping', level: 'Essential' },
+      { id: '4', name: 'User Research', level: 'Recommended' },
+      { id: '5', name: 'Adobe XD', level: 'Recommended' },
+      { id: '6', name: 'Figma', level: 'Essential' },
+      { id: '7', name: 'Visual Design', level: 'Recommended' },
+      { id: '8', name: 'Responsive Design', level: 'Essential' },
+      { id: '9', name: 'Usability Testing', level: 'Valuable' },
+      { id: '10', name: 'Information Architecture', level: 'Valuable' },
+    ],
+    '4': [
+      { id: '1', name: 'SEO', level: 'Essential' },
+      { id: '2', name: 'Content Marketing', level: 'Essential' },
+      { id: '3', name: 'Social Media Marketing', level: 'Essential' },
+      { id: '4', name: 'Google Ads', level: 'Recommended' },
+      { id: '5', name: 'Email Marketing', level: 'Recommended' },
+      { id: '6', name: 'Google Analytics', level: 'Essential' },
+      { id: '7', name: 'CRO', level: 'Valuable' },
+      { id: '8', name: 'Marketing Automation', level: 'Valuable' },
+      { id: '9', name: 'Affiliate Marketing', level: 'Emerging' },
+      { id: '10', name: 'Video Marketing', level: 'Emerging' },
+    ],
+    '5': [
+      { id: '1', name: 'Agile Methodology', level: 'Essential' },
+      { id: '2', name: 'Scrum', level: 'Recommended' },
+      { id: '3', name: 'Risk Management', level: 'Essential' },
+      { id: '4', name: 'Project Planning', level: 'Essential' },
+      { id: '5', name: 'Stakeholder Management', level: 'Essential' },
+      { id: '6', name: 'Jira', level: 'Recommended' },
+      { id: '7', name: 'Budgeting', level: 'Valuable' },
+      { id: '8', name: 'MS Project', level: 'Valuable' },
+      { id: '9', name: 'Resource Allocation', level: 'Recommended' },
+      { id: '10', name: 'Change Management', level: 'Valuable' },
+    ],
+    '6': [
+      { id: '1', name: 'Network Security', level: 'Essential' },
+      { id: '2', name: 'Ethical Hacking', level: 'Recommended' },
+      { id: '3', name: 'Security Analysis', level: 'Essential' },
+      { id: '4', name: 'Cryptography', level: 'Valuable' },
+      { id: '5', name: 'Penetration Testing', level: 'Recommended' },
+      { id: '6', name: 'SIEM', level: 'Valuable' },
+      { id: '7', name: 'Risk Assessment', level: 'Essential' },
+      { id: '8', name: 'Secure Coding', level: 'Valuable' },
+      { id: '9', name: 'Incident Response', level: 'Recommended' },
+      { id: '10', name: 'Cloud Security', level: 'Emerging' },
+    ],
+  });
+  const [error, setError] = useState(null);
+  const [lastUpdated, setLastUpdated] = useState(null);
+
+  // API URL for the FastAPI server
+  const API_URL = 'http://localhost:8000/api/skills';
+  
+  // Function to check if the API server is running
+  const checkAPIStatus = async () => {
+    try {
+      const response = await fetch('http://localhost:8000/health', {
+        method: 'GET',
+      });
+      return response.ok;
+    } catch (err) {
+      console.error('API server health check failed:', err);
+      return false;
+    }
+  };
+
+  // Function to determine skill level based on position
+  const determineSkillLevel = (index) => {
+    if (index < 3) return 'Essential';
+    if (index < 6) return 'Recommended';
+    if (index < 8) return 'Valuable';
+    return 'Emerging';
+  };
+
+  // Function to fetch skills from API
+  const fetchSkills = async () => {
+    try {
+      setIsLoading(true);
+      setError(null);
+      
+      // Check if API server is running
+      const isServerRunning = await checkAPIStatus();
+      if (!isServerRunning) {
+        throw new Error('API server is not running. Please start the server using the start.bat file.');
+      }
+      
+      // Map domain IDs to job titles for API
+      const jobTitles = {
+        '1': 'Software Developer',
+        '2': 'Data Scientist',
+        '3': 'UI UX Designer',
+        '4': 'Digital Marketing Specialist',
+        '5': 'Project Manager',
+        '6': 'Cybersecurity Engineer'
+      };
+      
+      const jobTitle = jobTitles[domain.id];
+      
+      console.log(`Fetching skills for ${jobTitle}...`);
+      
+      try {
+        // Make API call to your Python server with timeout
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
+        
+        const response = await fetch(API_URL, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ job_title: jobTitle }),
+          signal: controller.signal
+        });
+        
+        clearTimeout(timeoutId);
+        
+        if (!response.ok) {
+          throw new Error(`API call failed with status: ${response.status}`);
+        }
+        
+        const data = await response.json();
+        console.log('API response:', data);
+        
+        // Transform the bullet points into our skills format
+        if (data.response && Array.isArray(data.response)) {
+          const updatedSkills = data.response.map((skill, index) => ({
+            id: String(index + 1),
+            name: skill,
+            level: determineSkillLevel(index),
+          }));
+          
+          // Update the state with the new skills
+          setSkillsData(prevData => ({
+            ...prevData,
+            [domain.id]: updatedSkills,
+          }));
+          
+          setLastUpdated(new Date().toLocaleString());
+        } else {
+          throw new Error('Invalid response format from API');
+        }
+      } catch (fetchError) {
+        if (fetchError.name === 'AbortError') {
+          throw new Error('Request timed out. The server took too long to respond.');
+        }
+        throw fetchError;
+      }
+    } catch (err) {
+      console.error('Error fetching skills:', err);
+      setError(err.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // Get the appropriate icon name based on skill name
+  const getSkillIcon = (skillName) => {
+    const iconMap = {
+      'JavaScript': 'logo-javascript',
+      'React': 'logo-react',
+      'Node.js': 'server-outline',
+      'Python': 'code-outline',
+      'Git': 'git-branch-outline',
+      'SQL': 'server-outline',
+      'Docker': 'cube-outline',
+      'AWS': 'cloud-outline',
+      'TypeScript': 'code-slash-outline',
+      'GraphQL': 'analytics-outline',
+      'R': 'calculator-outline',
+      'Machine Learning': 'brain-outline',
+      'Data Visualization': 'bar-chart-outline',
+      'Statistical Analysis': 'stats-chart-outline',
+      'UI Design': 'color-palette-outline',
+      'Wireframing': 'pencil-outline',
+      'Prototyping': 'layers-outline',
+      'Figma': 'brush-outline',
+      'SEO': 'search-outline',
+      'Content Marketing': 'document-text-outline',
+      'Social Media Marketing': 'share-social-outline',
+      'Google Ads': 'megaphone-outline',
+      'Email Marketing': 'mail-outline',
+      'Agile Methodology': 'infinite-outline',
+      'Scrum': 'people-outline',
+      'Risk Management': 'shield-outline',
+      'Project Planning': 'calendar-outline',
+      'Network Security': 'shield-checkmark-outline',
+      'Ethical Hacking': 'bug-outline',
+      'Cryptography': 'lock-closed-outline',
+    };
+    
+    return iconMap[skillName] || 'star-outline';
+  };
+
+  const getLevelColor = (level) => {
+    switch (level) {
+      case 'Essential': return 'linear-gradient(135deg, #0a8528, #4CAF50)';  // Green gradient
+      case 'Recommended': return 'linear-gradient(135deg, #0077B5, #00a0dc)'; // Blue gradient
+      case 'Valuable': return 'linear-gradient(135deg, #f5a623, #FFB74D)';   // Orange gradient
+      case 'Emerging': return 'linear-gradient(135deg, #00a0dc, #81D4FA)';   // Light blue gradient
+      default: return COLORS.gray;
+    }
+  };
+  
+  // Extract solid color from gradient for React Native (which doesn't support gradients directly)
+  const getSolidColor = (level) => {
+    switch (level) {
+      case 'Essential': return '#0a8528';
+      case 'Recommended': return '#0077B5';
+      case 'Valuable': return '#f5a623';
+      case 'Emerging': return '#00a0dc';
+      default: return COLORS.gray;
+    }
+  };
+
+  return (
+    <SafeAreaView style={styles.container}>
+      <View style={styles.header}>
+        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
+          <Ionicons name="arrow-back" size={24} color={COLORS.white} />
+        </TouchableOpacity>
+        <View style={styles.logoContainer}>
+          <Text style={styles.logo}>{domain.title}</Text>
+        </View>
+        <TouchableOpacity onPress={fetchSkills} disabled={isLoading} style={styles.refreshButton}>
+          <Ionicons 
+            name={isLoading ? "sync-circle" : "refresh"} 
+            size={24} 
+            color={COLORS.white} 
+            style={isLoading ? {opacity: 0.7} : {}}
+          />
+        </TouchableOpacity>
+      </View>
+      
+      <View style={styles.content}>
+        <View style={styles.titleContainer}>
+          <Text style={styles.subtitle}>Top 10 Skills for {domain.title}</Text>
+          {lastUpdated && (
+            <Text style={styles.lastUpdatedText}>Updated: {lastUpdated}</Text>
+          )}
+        </View>
+        
+        {isLoading ? (
+          <View style={styles.loadingContainer}>
+            <ActivityIndicator size="large" color={COLORS.primary} />
+            <Text style={styles.loadingText}>Fetching latest skills from LinkedIn...</Text>
+            <Text style={styles.loadingSubText}>This may take a minute</Text>
+          </View>
+        ) : error ? (
+          <View style={styles.errorContainer}>
+            <Ionicons name="alert-circle" size={48} color={COLORS.error} />
+            <Text style={styles.errorText}>{error}</Text>
+            <TouchableOpacity 
+              style={[styles.button, {marginTop: 16, backgroundColor: COLORS.primary}]}
+              onPress={fetchSkills}
+            >
+              <Text style={styles.buttonText}>Try Again</Text>
+            </TouchableOpacity>
+          </View>
+        ) : (
+          <>
+            <TouchableOpacity 
+              style={styles.updateButton}
+              onPress={fetchSkills}
+            >
+              <Ionicons name="refresh" size={16} color={COLORS.white} />
+              <Text style={styles.updateButtonText}>Refresh Skills from LinkedIn</Text>
+            </TouchableOpacity>
+            
+            <FlatList
+              data={skillsData[domain.id]}
+              keyExtractor={item => item.id}
+              renderItem={({ item }) => (
+                <TouchableOpacity 
+                  style={styles.enhancedSkillCard}
+                  onPress={() => navigation.navigate('SkillResources', { skill: item, domain: domain })}
+                >
+                  <View style={[styles.skillIconContainer, {backgroundColor: getSolidColor(item.level)}]}>
+                    <Ionicons name={getSkillIcon(item.name)} size={24} color={COLORS.white} />
+                  </View>
+                  <View style={styles.skillInfo}>
+                    <Text style={styles.skillTitle}>{item.name}</Text>
+                    <View style={[styles.levelBadge, {backgroundColor: getSolidColor(item.level)}]}>
+                      <Text style={styles.levelText}>{item.level}</Text>
+                    </View>
+                  </View>
+                  <View style={styles.arrowContainer}>
+                    <Ionicons name="chevron-forward" size={24} color={COLORS.gray} />
+                  </View>
+                </TouchableOpacity>
+              )}
+              showsVerticalScrollIndicator={false}
+              contentContainerStyle={{ paddingBottom: 20 }}
+            />
+          </>
+        )}
+      </View>
+    </SafeAreaView>
+  );
+}
+
+// --- Skill Resources Screen ---
+function SkillResourcesScreen({ route, navigation }) {
+  const { skill, domain } = route.params;
+  const [activeTab, setActiveTab] = useState('Courses');
+  
+  const [isLoading, setIsLoading] = useState(false);
+  const [isSearching, setIsSearching] = useState(false);
+  
+  // Function to simulate API call to get resources
+  const fetchResources = async (resourceType) => {
+    setIsSearching(true);
+    
+    // In a real implementation, we would call our Python API here
+    // For demo purposes, just simulate a delay
+    await new Promise(resolve => setTimeout(resolve, 1500));
+    
+    setIsSearching(false);
+  };
+  
+  useEffect(() => {
+    // When the tab changes, simulate fetching new data
+    fetchResources(activeTab);
+  }, [activeTab]);
+  
+  // Mock data for resources with enhanced details
+  const resources = {
+    Courses: [
+      { id: '1', title: 'Complete Guide to ' + skill.name, provider: 'Udemy', rating: 4.8, price: '$14.99', reviewCount: '3,456', difficulty: 'Beginner', duration: '12h 30m', url: 'https://udemy.com' },
+      { id: '2', title: skill.name + ' for Beginners', provider: 'Coursera', rating: 4.7, price: '$39.99/month', reviewCount: '2,129', difficulty: 'Beginner', duration: '8 weeks', url: 'https://coursera.org' },
+      { id: '3', title: 'Advanced ' + skill.name + ' Masterclass', provider: 'edX', rating: 4.6, price: '$49.99', reviewCount: '1,875', difficulty: 'Advanced', duration: '10 weeks', url: 'https://edx.org' },
+      { id: '4', title: 'Practical ' + skill.name + ' Projects', provider: 'Pluralsight', rating: 4.5, price: '$29.99/month', reviewCount: '1,254', difficulty: 'Intermediate', duration: '18h 45m', url: 'https://pluralsight.com' },
+      { id: '5', title: skill.name + ' Certification Course', provider: 'LinkedIn Learning', rating: 4.9, price: '$19.99/month', reviewCount: '5,678', difficulty: 'All Levels', duration: '15h 20m', url: 'https://linkedin.com/learning' },
+    ],
+    Websites: [
+      { id: '1', title: skill.name + ' Documentation', description: 'Official documentation with complete API reference and examples', url: 'https://docs.example.com/' + skill.name.toLowerCase(), type: 'Documentation', lastUpdated: 'Updated weekly' },
+      { id: '2', title: skill.name + ' Community Hub', description: 'Join discussions with experts and enthusiasts worldwide', url: 'https://community.example.com/' + skill.name.toLowerCase(), type: 'Community', lastUpdated: 'Active daily' },
+      { id: '3', title: 'Learn ' + skill.name + ' Today', description: 'Step-by-step tutorials with interactive coding exercises', url: 'https://learn.example.com/' + skill.name.toLowerCase(), type: 'Tutorial', lastUpdated: 'Updated monthly' },
+      { id: '4', title: skill.name + ' Tutorial Point', description: 'Comprehensive guides with practical examples', url: 'https://www.tutorialpoint.com/' + skill.name.toLowerCase(), type: 'Tutorial', lastUpdated: 'Updated quarterly' },
+      { id: '5', title: 'Free ' + skill.name + ' Resources', description: 'Collection of free tools, templates and guides', url: 'https://free-resources.example.com/' + skill.name.toLowerCase(), type: 'Resources', lastUpdated: 'Updated weekly' },
+    ],
+    Books: [
+      { id: '1', title: 'Mastering ' + skill.name, author: 'John Smith', year: '2023', price: '$35.99', publisher: 'O\'Reilly Media', pages: '548', isbn: '978-1-4919-9828-4', url: 'https://amazon.com' },
+      { id: '2', title: skill.name + ' From Zero to Hero', author: 'Jane Doe', year: '2022', price: '$28.50', publisher: 'No Starch Press', pages: '324', isbn: '978-1-7185-0153-2', url: 'https://amazon.com' },
+      { id: '3', title: 'Pro ' + skill.name + ' Techniques', author: 'David Wilson', year: '2023', price: '$42.99', publisher: 'Apress', pages: '672', isbn: '978-1-4842-8856-3', url: 'https://amazon.com' },
+      { id: '4', title: 'Essential ' + skill.name + ' Guide', author: 'Sarah Johnson', year: '2021', price: '$24.99', publisher: 'Packt Publishing', pages: '412', isbn: '978-1-8392-1994-5', url: 'https://amazon.com' },
+      { id: '5', title: skill.name + ' For Professionals', author: 'Michael Brown', year: '2022', price: '$39.99', publisher: 'Wiley', pages: '524', isbn: '978-1-1191-8653-3', url: 'https://amazon.com' },
+    ]
+  };
+
+  // Get provider icon and color
+  const getProviderInfo = (provider) => {
+    const providerMap = {
+      'Udemy': { icon: 'school-outline', color: '#A435F0' },
+      'Coursera': { icon: 'globe-outline', color: '#0056D2' },
+      'edX': { icon: 'school-outline', color: '#02262B' },
+      'Pluralsight': { icon: 'desktop-outline', color: '#F15B2A' },
+      'LinkedIn Learning': { icon: 'logo-linkedin', color: '#0077B5' },
+      'DataCamp': { icon: 'analytics-outline', color: '#03EF62' },
+      'Udacity': { icon: 'rocket-outline', color: '#01B3E3' },
+    };
+    
+    return providerMap[provider] || { icon: 'school-outline', color: COLORS.primary };
+  };
+  
+  // Get website icon based on type
+  const getWebsiteInfo = (type) => {
+    const typeMap = {
+      'Documentation': { icon: 'document-text-outline', color: '#4285F4' },
+      'Community': { icon: 'people-outline', color: '#34A853' },
+      'Tutorial': { icon: 'create-outline', color: '#FBBC05' },
+      'Resources': { icon: 'folder-open-outline', color: '#EA4335' },
+    };
+    
+    return typeMap[type] || { icon: 'globe-outline', color: '#f5a623' };
+  };
+  
+  // Get book icon based on publisher
+  const getPublisherInfo = (publisher) => {
+    const publisherMap = {
+      'O\'Reilly Media': { icon: 'book-outline', color: '#B52E31' },
+      'No Starch Press': { icon: 'terminal-outline', color: '#000000' },
+      'Apress': { icon: 'code-slash-outline', color: '#6AAA3B' },
+      'Packt Publishing': { icon: 'library-outline', color: '#1E5D88' },
+      'Wiley': { icon: 'newspaper-outline', color: '#2C5898' },
+    };
+    
+    return publisherMap[publisher] || { icon: 'library-outline', color: '#8e44ad' };
+  };
+
+  const renderCourseItem = ({ item }) => {
+    const { icon, color } = getProviderInfo(item.provider);
+    
+    return (
+      <View style={styles.enhancedResourceCard}>
+        <View style={styles.resourceCardHeader}>
+          <View style={[styles.courseIconContainer, {backgroundColor: color}]}>
+            <Ionicons name={icon} size={24} color={COLORS.white} />
+          </View>
+          <View style={styles.resourceInfo}>
+            <Text style={styles.resourceTitle}>{item.title}</Text>
+            <View style={styles.resourceMeta}>
+              <View style={styles.ratingContainer}>
+                <Ionicons name="star" size={16} color="#FFD700" />
+                <Text style={styles.ratingText}>{item.rating} ({item.reviewCount})</Text>
+              </View>
+              <View style={styles.difficultyContainer}>
+                <Ionicons name="medal-outline" size={16} color={COLORS.gray} />
+                <Text style={styles.difficultyText}>{item.difficulty}</Text>
+              </View>
+              <View style={styles.durationContainer}>
+                <Ionicons name="time-outline" size={16} color={COLORS.gray} />
+                <Text style={styles.durationText}>{item.duration}</Text>
+              </View>
+            </View>
+          </View>
+        </View>
+        
+        <View style={styles.resourceCardFooter}>
+          <Text style={styles.resourcePrice}>{item.price}</Text>
+          <TouchableOpacity 
+            style={styles.enhancedEnrollButton}
+            onPress={() => {
+              // In a real app, we would open the course URL or in-app view
+              console.log('Enrolling in course:', item.title);
+            }}
+          >
+            <Text style={styles.enrollText}>Enroll Now</Text>
+            <Ionicons name="arrow-forward" size={16} color={COLORS.white} style={{marginLeft: 6}} />
+          </TouchableOpacity>
+        </View>
+      </View>
+    );
+  };
+
+  const renderWebsiteItem = ({ item }) => {
+    const { icon, color } = getWebsiteInfo(item.type);
+    
+    return (
+      <View style={styles.enhancedResourceCard}>
+        <View style={styles.resourceCardHeader}>
+          <View style={[styles.courseIconContainer, {backgroundColor: color}]}>
+            <Ionicons name={icon} size={24} color={COLORS.white} />
+          </View>
+          <View style={styles.resourceInfo}>
+            <Text style={styles.resourceTitle}>{item.title}</Text>
+            <Text style={styles.resourceDescription}>{item.description}</Text>
+            <View style={styles.resourceMeta}>
+              <View style={styles.typeContainer}>
+                <Ionicons name="pricetag-outline" size={14} color={COLORS.gray} />
+                <Text style={styles.typeText}>{item.type}</Text>
+              </View>
+              <View style={styles.updateContainer}>
+                <Ionicons name="refresh-outline" size={14} color={COLORS.gray} />
+                <Text style={styles.updateText}>{item.lastUpdated}</Text>
+              </View>
+            </View>
+          </View>
+        </View>
+        
+        <View style={styles.resourceCardFooter}>
+          <Text style={styles.resourceUrl} numberOfLines={1} ellipsizeMode="middle">{item.url}</Text>
+          <TouchableOpacity 
+            style={styles.enhancedVisitButton}
+            onPress={() => {
+              // In a real app, we would open the website URL
+              console.log('Visiting website:', item.url);
+            }}
+          >
+            <Text style={styles.visitText}>Visit Site</Text>
+            <Ionicons name="open-outline" size={16} color={COLORS.white} style={{marginLeft: 6}} />
+          </TouchableOpacity>
+        </View>
+      </View>
+    );
+  };
+
+  const renderBookItem = ({ item }) => {
+    const { icon, color } = getPublisherInfo(item.publisher);
+    
+    return (
+      <View style={styles.enhancedResourceCard}>
+        <View style={styles.resourceCardHeader}>
+          <View style={[styles.courseIconContainer, {backgroundColor: color}]}>
+            <Ionicons name={icon} size={24} color={COLORS.white} />
+          </View>
+          <View style={styles.resourceInfo}>
+            <Text style={styles.resourceTitle}>{item.title}</Text>
+            <Text style={styles.resourceAuthor}>by {item.author} ({item.year})</Text>
+            <View style={styles.resourceMeta}>
+              <View style={styles.publisherContainer}>
+                <Ionicons name="business-outline" size={14} color={COLORS.gray} />
+                <Text style={styles.publisherText}>{item.publisher}</Text>
+              </View>
+              <View style={styles.pagesContainer}>
+                <Ionicons name="document-outline" size={14} color={COLORS.gray} />
+                <Text style={styles.pagesText}>{item.pages} pages</Text>
+              </View>
+            </View>
+          </View>
+        </View>
+        
+        <View style={styles.resourceCardFooter}>
+          <Text style={styles.resourcePrice}>{item.price}</Text>
+          <TouchableOpacity 
+            style={styles.enhancedBuyButton}
+            onPress={() => {
+              // In a real app, we would open the book purchase URL
+              console.log('Buying book:', item.title);
+            }}
+          >
+            <Text style={styles.buyText}>Buy Now</Text>
+            <Ionicons name="cart-outline" size={16} color={COLORS.white} style={{marginLeft: 6}} />
+          </TouchableOpacity>
+        </View>
+      </View>
+    );
+  };
+
+  return (
+    <SafeAreaView style={styles.container}>
+      <View style={styles.header}>
+        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
+          <Ionicons name="arrow-back" size={24} color={COLORS.white} />
+        </TouchableOpacity>
+        <View style={styles.logoContainer}>
+          <Text style={styles.logo}>{skill.name}</Text>
+        </View>
+        <View style={{width: 24}}></View>
+      </View>
+      
+      <View style={styles.tabContainer}>
+        <TouchableOpacity 
+          style={[styles.tab, activeTab === 'Courses' && styles.activeTab]}
+          onPress={() => setActiveTab('Courses')}
+        >
+          <Ionicons 
+            name="book-outline" 
+            size={20} 
+            color={activeTab === 'Courses' ? COLORS.primary : COLORS.gray} 
+          />
+          <Text 
+            style={[styles.tabText, activeTab === 'Courses' && styles.activeTabText]}
+          >
+            Courses
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity 
+          style={[styles.tab, activeTab === 'Websites' && styles.activeTab]}
+          onPress={() => setActiveTab('Websites')}
+        >
+          <Ionicons 
+            name="globe-outline" 
+            size={20} 
+            color={activeTab === 'Websites' ? COLORS.primary : COLORS.gray} 
+          />
+          <Text 
+            style={[styles.tabText, activeTab === 'Websites' && styles.activeTabText]}
+          >
+            Websites
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity 
+          style={[styles.tab, activeTab === 'Books' && styles.activeTab]}
+          onPress={() => setActiveTab('Books')}
+        >
+          <Ionicons 
+            name="library-outline" 
+            size={20} 
+            color={activeTab === 'Books' ? COLORS.primary : COLORS.gray} 
+          />
+          <Text 
+            style={[styles.tabText, activeTab === 'Books' && styles.activeTabText]}
+          >
+            Books
+          </Text>
+        </TouchableOpacity>
+      </View>
+      
+      <View style={styles.content}>
+        <View style={styles.resourceHeader}>
+          <Text style={styles.subtitle}>Resources to learn {skill.name}</Text>
+          
+          <TouchableOpacity 
+            style={styles.refreshButton}
+            onPress={() => fetchResources(activeTab)}
+          >
+            <Ionicons 
+              name={isSearching ? "refresh-circle" : "refresh"} 
+              size={24} 
+              color={COLORS.primary}
+              style={isSearching ? {opacity: 0.5} : {}}
+            />
+          </TouchableOpacity>
+        </View>
+        
+        {/* Skill information card */}
+        <View style={styles.skillInfoCard}>
+          <Ionicons 
+            name={getSolidColor(skill.level) === '#0a8528' ? 'trending-up' : 'stats-chart'} 
+            size={20} 
+            color={getSolidColor(skill.level)} 
+          />
+          <Text style={styles.skillInfoText}>
+            This skill is <Text style={{fontWeight: 'bold', color: getSolidColor(skill.level)}}>{skill.level.toLowerCase()}</Text> for a successful career in {domain.title}.
+          </Text>
+        </View>
+        
+        {isSearching ? (
+          <View style={styles.loadingContainer}>
+            <ActivityIndicator size="large" color={COLORS.primary} />
+            <Text style={styles.loadingText}>Finding the best {activeTab.toLowerCase()} for {skill.name}...</Text>
+            <Text style={styles.loadingSubText}>This may take a moment</Text>
+          </View>
+        ) : (
+          <>
+            {activeTab === 'Courses' && (
+              <FlatList
+                data={resources.Courses}
+                keyExtractor={item => item.id}
+                renderItem={renderCourseItem}
+                showsVerticalScrollIndicator={false}
+                contentContainerStyle={styles.listContainer}
+                ListEmptyComponent={
+                  <View style={styles.emptyState}>
+                    <Ionicons name="school-outline" size={64} color={COLORS.lightGray} />
+                    <Text style={styles.emptyStateText}>No courses found for {skill.name}</Text>
+                    <TouchableOpacity 
+                      style={styles.retryButton}
+                      onPress={() => fetchResources('Courses')}
+                    >
+                      <Text style={styles.retryButtonText}>Retry</Text>
+                    </TouchableOpacity>
+                  </View>
+                }
+              />
+            )}
+            
+            {activeTab === 'Websites' && (
+              <FlatList
+                data={resources.Websites}
+                keyExtractor={item => item.id}
+                renderItem={renderWebsiteItem}
+                showsVerticalScrollIndicator={false}
+                contentContainerStyle={styles.listContainer}
+                ListEmptyComponent={
+                  <View style={styles.emptyState}>
+                    <Ionicons name="globe-outline" size={64} color={COLORS.lightGray} />
+                    <Text style={styles.emptyStateText}>No websites found for {skill.name}</Text>
+                    <TouchableOpacity 
+                      style={styles.retryButton}
+                      onPress={() => fetchResources('Websites')}
+                    >
+                      <Text style={styles.retryButtonText}>Retry</Text>
+                    </TouchableOpacity>
+                  </View>
+                }
+              />
+            )}
+            
+            {activeTab === 'Books' && (
+              <FlatList
+                data={resources.Books}
+                keyExtractor={item => item.id}
+                renderItem={renderBookItem}
+                showsVerticalScrollIndicator={false}
+                contentContainerStyle={styles.listContainer}
+                ListEmptyComponent={
+                  <View style={styles.emptyState}>
+                    <Ionicons name="book-outline" size={64} color={COLORS.lightGray} />
+                    <Text style={styles.emptyStateText}>No books found for {skill.name}</Text>
+                    <TouchableOpacity 
+                      style={styles.retryButton}
+                      onPress={() => fetchResources('Books')}
+                    >
+                      <Text style={styles.retryButtonText}>Retry</Text>
+                    </TouchableOpacity>
+                  </View>
+                }
+              />
+            )}
+          </>
+        )}
       </View>
     </SafeAreaView>
   );
@@ -482,11 +1224,21 @@ function ProfileScreen() {
   // Handle case where user might be null briefly during logout transition
   if (!user) {
     return (
-          <SafeAreaView style={styles.container}>      <View style={styles.header}>        <View style={styles.logoContainer}>          <Image source={require('./Images/cAREERbOOSTER.png')} style={styles.logoImage} />          <Text style={styles.subtitle}>Profile</Text>        </View>      </View>      <View style={[styles.content, styles.centerContent]}>        <ActivityIndicator size="large" color={COLORS.primary} />      </View>    </SafeAreaView>
+          <SafeAreaView style={styles.container}>
+            <View style={styles.header}>
+              <View style={styles.logoContainer}>
+                <Image source={require('./Images/cAREERbOOSTER.png')} style={styles.logoImage} />
+                <Text style={styles.subtitle}>Profile</Text>
+              </View>
+            </View>
+            <View style={[styles.content, styles.centerContent]}>
+              <ActivityIndicator size="large" color={COLORS.primary} />
+            </View>
+          </SafeAreaView>
     );
   }
 
-    return (    <SafeAreaView style={styles.container}>      <View style={styles.header}>        <View style={styles.logoContainer}>          <Image source={require('./Images/cAREERbOOSTER.png')} style={styles.logoImage} />          <Text style={styles.subtitle}>Profile</Text>        </View>      </View>      <ScrollView style={styles.content}>
+    return (          <SafeAreaView style={styles.container}>        <View style={styles.header}>          <View style={styles.logoContainer}>            <Image source={require('./Images/cAREERbOOSTER.png')} style={styles.logoImage} />            <Text style={styles.subtitle}>Profile</Text>          </View>        </View>        <ScrollView style={styles.content}>
         {/* Profile Info Card */}
         <View style={styles.profileCard}>
           <View style={styles.avatarCircle}>
@@ -837,7 +1589,8 @@ function ConsumerStack() {
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="MainTabs" component={ConsumerTabNavigator} />
       <Stack.Screen name="Analysis" component={AnalysisScreen} />
-      {/* Add other screens accessible post-login and not in tabs, e.g., detail screens */}
+      <Stack.Screen name="DomainSkills" component={DomainSkillsScreen} />
+      <Stack.Screen name="SkillResources" component={SkillResourcesScreen} />
     </Stack.Navigator>
   );
 }
@@ -881,6 +1634,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderBottomColor: 'rgba(0,0,0,0.05)',
     borderBottomWidth: 1,
+    height: 70,
   },
   backButton: {
     padding: 4,
@@ -1178,12 +1932,13 @@ const styles = StyleSheet.create({
     elevation: 4,
     borderBottomColor: 'rgba(0,0,0,0.05)',
     borderBottomWidth: 1,
+    height: 70,
   },
   headerProfileIcon: {
     width: 40,
     height: 40,
     borderRadius: 20,
-    backgroundColor: COLORS.white,
+    backgroundColor: 'rgba(255,255,255,0.2)',
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -1755,154 +2510,546 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: COLORS.darkGray,
   },
-    // Logo styles for all screens  logoContainer: {    flex: 1,    alignItems: 'center',    justifyContent: 'center',  },  logoImage: {    width: 180,    height: 45,    resizeMode: 'contain',  },  // Special larger logo for login/register screens
-  loginLogoContainer: {
-    width: '100%',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginVertical: 40,
-  },
-  loginLogoImage: {
-    width: 220,
-    height: 55,
-    resizeMode: 'contain',
-    marginBottom: 20,
-  },
-  formSubtitle: {
-    fontSize: 16,
-    color: COLORS.gray,
-    marginBottom: 24,
-    textAlign: 'center',
-  },
-  // Profile Screen specific styles
-  profileCard: {
-    backgroundColor: COLORS.white,
-    borderRadius: 12,
-    padding: 20,
-    alignItems: 'center',
-    marginBottom: 20,
-    shadowColor: COLORS.cardShadow,
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
-  },
-  avatarCircle: {
-    width: 80,
-    height: 80,
-    borderRadius: 40,
-    backgroundColor: COLORS.primary,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: 12,
-  },
-  avatarText: {
-    color: COLORS.white,
-    fontSize: 32,
-    fontWeight: 'bold',
-  },
-  profileNameText: {
-    fontSize: 20,
-    fontWeight: '600',
-    color: COLORS.darkBlue,
-    marginBottom: 4,
-  },
-  profileEmailText: {
-    fontSize: 16,
-    color: COLORS.gray,
-    marginBottom: 8,
-  },
-  profileMenuCard: {
-    backgroundColor: COLORS.white,
-    borderRadius: 12,
-    marginBottom: 20,
-    shadowColor: COLORS.cardShadow,
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
-    overflow: 'hidden', // Ensures border radius is respected by children
-  },
-  profileMenuItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingVertical: 16,
-    paddingHorizontal: 20,
-  },
-  profileMenuItemIcon: {
-    marginRight: 16,
-  },
-  profileMenuItemText: {
-    flex: 1,
-    fontSize: 16,
-    color: COLORS.darkGray,
-  },
-  menuDivider: {
-    height: 1,
-    backgroundColor: COLORS.borderColor,
-    marginHorizontal: 20,
-  },
-  signOutButton: {
-    backgroundColor: COLORS.error, // Using error color for sign out
-    marginTop: 10,
-    marginBottom: 20, // Add some bottom margin
-  },
-  // New styles for the CV Builder
-  skillsList: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    marginBottom: 16,
-  },
-  skillTag: {
-    backgroundColor: COLORS.primary,
-    borderRadius: 20,
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    margin: 4,
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  skillTagText: {
-    color: COLORS.white,
-    marginRight: 8,
-    fontSize: 14,
-  },
-  addSkillContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  templateScroll: {
-    marginVertical: 16,
-  },
-  templateCard: {
-    width: 160,
-    marginRight: 16,
-    alignItems: 'center',
-  },
-  templatePreview: {
-    width: 140,
-    height: 180,
-    borderRadius: 8,
-    marginBottom: 8,
-  },
-  templateName: {
-    fontSize: 16,
-    fontWeight: '500',
-    color: COLORS.darkBlue,
-  },
-  secondaryButton: {
-    backgroundColor: COLORS.white,
-    borderWidth: 1,
-    borderColor: COLORS.primary,
-    marginTop: 0,
-    marginBottom: 40,
-  },
-  secondaryButtonText: {
-    color: COLORS.primary,
-    fontSize: 16,
-    fontWeight: '600',
-  },
-});
+    // Logo styles for all screens
+    logoContainer: {
+      flex: 0.8,
+      alignItems: 'flex-start',
+      justifyContent: 'center',
+    },
+    logoImage: {
+      width: 180,
+      height: 40,
+      resizeMode: 'contain',
+    },
+    // Special larger logo for login/register screens
+    loginLogoContainer: {
+      width: '100%',
+      alignItems: 'center',
+      justifyContent: 'center',
+      marginVertical: 40,
+    },
+    loginLogoImage: {
+      width: 220,
+      height: 55,
+      resizeMode: 'contain',
+      marginBottom: 20,
+    },
+    formSubtitle: {
+      fontSize: 16,
+      color: COLORS.gray,
+      marginBottom: 24,
+      textAlign: 'center',
+    },
+    // Profile Screen specific styles
+    profileCard: {
+      backgroundColor: COLORS.white,
+      borderRadius: 12,
+      padding: 20,
+      alignItems: 'center',
+      marginBottom: 20,
+      shadowColor: COLORS.cardShadow,
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.1,
+      shadowRadius: 4,
+      elevation: 3,
+    },
+    avatarCircle: {
+      width: 80,
+      height: 80,
+      borderRadius: 40,
+      backgroundColor: COLORS.primary,
+      justifyContent: 'center',
+      alignItems: 'center',
+      marginBottom: 12,
+    },
+    avatarText: {
+      color: COLORS.white,
+      fontSize: 32,
+      fontWeight: 'bold',
+    },
+    profileNameText: {
+      fontSize: 20,
+      fontWeight: '600',
+      color: COLORS.darkBlue,
+      marginBottom: 4,
+    },
+    profileEmailText: {
+      fontSize: 16,
+      color: COLORS.gray,
+      marginBottom: 8,
+    },
+    profileMenuCard: {
+      backgroundColor: COLORS.white,
+      borderRadius: 12,
+      marginBottom: 20,
+      shadowColor: COLORS.cardShadow,
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.1,
+      shadowRadius: 4,
+      elevation: 3,
+      overflow: 'hidden', // Ensures border radius is respected by children
+    },
+    profileMenuItem: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      paddingVertical: 16,
+      paddingHorizontal: 20,
+    },
+    profileMenuItemIcon: {
+      marginRight: 16,
+    },
+    profileMenuItemText: {
+      flex: 1,
+      fontSize: 16,
+      color: COLORS.darkGray,
+    },
+    menuDivider: {
+      height: 1,
+      backgroundColor: COLORS.borderColor,
+      marginHorizontal: 20,
+    },
+    signOutButton: {
+      backgroundColor: COLORS.error, // Using error color for sign out
+      marginTop: 10,
+      marginBottom: 20, // Add some bottom margin
+    },
+    // New styles for the CV Builder
+    skillsList: {
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      marginBottom: 16,
+    },
+    skillTag: {
+      backgroundColor: COLORS.primary,
+      borderRadius: 20,
+      paddingHorizontal: 12,
+      paddingVertical: 6,
+      margin: 4,
+      flexDirection: 'row',
+      alignItems: 'center',
+    },
+    skillTagText: {
+      color: COLORS.white,
+      marginRight: 8,
+      fontSize: 14,
+    },
+    addSkillContainer: {
+      flexDirection: 'row',
+      alignItems: 'center',
+    },
+    templateScroll: {
+      marginVertical: 16,
+    },
+    templateCard: {
+      width: 160,
+      marginRight: 16,
+      alignItems: 'center',
+    },
+    templatePreview: {
+      width: 140,
+      height: 180,
+      borderRadius: 8,
+      marginBottom: 8,
+    },
+    templateName: {
+      fontSize: 16,
+      fontWeight: '500',
+      color: COLORS.darkBlue,
+    },
+    secondaryButton: {
+      backgroundColor: COLORS.white,
+      borderWidth: 1,
+      borderColor: COLORS.primary,
+      marginTop: 0,
+      marginBottom: 40,
+    },
+    secondaryButtonText: {
+      color: COLORS.primary,
+      fontSize: 16,
+      fontWeight: '600',
+    },
+    domainCard: {
+      backgroundColor: COLORS.white,
+      borderRadius: 12,
+      padding: 20,
+      marginBottom: 16,
+      width: '48%',
+      alignItems: 'center',
+      shadowColor: COLORS.cardShadow,
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.1,
+      shadowRadius: 4,
+      elevation: 2,
+    },
+    domainIconContainer: {
+      width: 70,
+      height: 70,
+      borderRadius: 35,
+      backgroundColor: COLORS.primary,
+      justifyContent: 'center',
+      alignItems: 'center',
+      marginBottom: 12,
+    },
+    domainTitle: {
+      fontSize: 16,
+      fontWeight: '600',
+      color: COLORS.darkBlue,
+      textAlign: 'center',
+    },
+    // Styles for DomainSkills screen
+    titleContainer: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      marginBottom: 16,
+    },
+    lastUpdatedText: {
+      fontSize: 12,
+      color: COLORS.gray,
+      fontStyle: 'italic',
+    },
+    loadingContainer: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      paddingVertical: 50,
+    },
+    loadingText: {
+      fontSize: 16,
+      color: COLORS.darkGray,
+      marginTop: 16,
+    },
+    loadingSubText: {
+      fontSize: 14,
+      color: COLORS.gray,
+      marginTop: 8,
+      fontStyle: 'italic',
+    },
+    errorContainer: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      paddingVertical: 50,
+    },
+    errorText: {
+      fontSize: 16,
+      color: COLORS.error,
+      marginTop: 16,
+      textAlign: 'center',
+      marginHorizontal: 20,
+    },
+    updateButton: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      backgroundColor: COLORS.primary,
+      paddingVertical: 8,
+      paddingHorizontal: 16,
+      borderRadius: 6,
+      alignSelf: 'flex-start',
+      marginBottom: 16,
+    },
+    updateButtonText: {
+      color: COLORS.white,
+      marginLeft: 8,
+      fontSize: 14,
+      fontWeight: '500',
+    },
+    enhancedSkillCard: {
+      backgroundColor: COLORS.white,
+      borderRadius: 10,
+      padding: 16,
+      marginBottom: 12,
+      flexDirection: 'row',
+      alignItems: 'center',
+      shadowColor: COLORS.cardShadow,
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.1,
+      shadowRadius: 4,
+      elevation: 2,
+    },
+    skillIconContainer: {
+      width: 48,
+      height: 48,
+      borderRadius: 24,
+      justifyContent: 'center',
+      alignItems: 'center',
+      marginRight: 16,
+    },
+    skillInfo: {
+      flex: 1,
+    },
+    skillTitle: {
+      fontSize: 16,
+      fontWeight: '600',
+      color: COLORS.darkBlue,
+      marginBottom: 4,
+    },
+    levelBadge: {
+      paddingHorizontal: 8,
+      paddingVertical: 3,
+      borderRadius: 4,
+      alignSelf: 'flex-start',
+    },
+    levelText: {
+      color: COLORS.white,
+      fontSize: 12,
+      fontWeight: '500',
+    },
+    arrowContainer: {
+      padding: 4,
+    },
+    refreshButton: {
+      width: 40,
+      height: 40,
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    // Styles for SkillResources screen
+    tabContainer: {
+      flexDirection: 'row',
+      backgroundColor: COLORS.white,
+      paddingVertical: 4,
+      paddingHorizontal: 16,
+      borderBottomWidth: 1,
+      borderBottomColor: COLORS.borderColor,
+    },
+    tab: {
+      flex: 1,
+      alignItems: 'center',
+      paddingVertical: 12,
+      flexDirection: 'row',
+      justifyContent: 'center',
+    },
+    activeTab: {
+      borderBottomWidth: 2,
+      borderBottomColor: COLORS.primary,
+    },
+    tabText: {
+      fontSize: 14,
+      color: COLORS.gray,
+      marginLeft: 4,
+    },
+    activeTabText: {
+      color: COLORS.primary,
+      fontWeight: '500',
+    },
+    resourceHeader: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      marginBottom: 16,
+    },
+    skillInfoCard: {
+      backgroundColor: 'rgba(0, 119, 181, 0.1)',
+      borderRadius: 8,
+      padding: 12,
+      marginBottom: 16,
+      flexDirection: 'row',
+      alignItems: 'center',
+    },
+    skillInfoText: {
+      fontSize: 14,
+      color: COLORS.darkGray,
+      marginLeft: 8,
+      flex: 1,
+    },
+    enhancedResourceCard: {
+      backgroundColor: COLORS.white,
+      borderRadius: 10,
+      padding: 16,
+      marginBottom: 16,
+      shadowColor: COLORS.cardShadow,
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.1,
+      shadowRadius: 4,
+      elevation: 2,
+    },
+    resourceCardHeader: {
+      flexDirection: 'row',
+      marginBottom: 12,
+    },
+    resourceInfo: {
+      flex: 1,
+    },
+    resourceTitle: {
+      fontSize: 16,
+      fontWeight: '600',
+      color: COLORS.darkBlue,
+      marginBottom: 4,
+    },
+    resourceDescription: {
+      fontSize: 14,
+      color: COLORS.darkGray,
+      marginBottom: 6,
+    },
+    resourceAuthor: {
+      fontSize: 14,
+      color: COLORS.gray,
+      marginBottom: 6,
+    },
+    resourceMeta: {
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+    },
+    ratingContainer: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      marginRight: 12,
+      marginBottom: 4,
+    },
+    ratingText: {
+      fontSize: 13,
+      color: COLORS.darkGray,
+      marginLeft: 4,
+    },
+    difficultyContainer: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      marginRight: 12,
+      marginBottom: 4,
+    },
+    difficultyText: {
+      fontSize: 13,
+      color: COLORS.darkGray,
+      marginLeft: 4,
+    },
+    durationContainer: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      marginBottom: 4,
+    },
+    durationText: {
+      fontSize: 13,
+      color: COLORS.darkGray,
+      marginLeft: 4,
+    },
+    typeContainer: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      marginRight: 12,
+      marginBottom: 4,
+    },
+    typeText: {
+      fontSize: 13,
+      color: COLORS.darkGray,
+      marginLeft: 4,
+    },
+    updateContainer: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      marginBottom: 4,
+    },
+    updateText: {
+      fontSize: 13,
+      color: COLORS.darkGray,
+      marginLeft: 4,
+    },
+    publisherContainer: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      marginRight: 12,
+      marginBottom: 4,
+    },
+    publisherText: {
+      fontSize: 13,
+      color: COLORS.darkGray,
+      marginLeft: 4,
+    },
+    pagesContainer: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      marginBottom: 4,
+    },
+    pagesText: {
+      fontSize: 13,
+      color: COLORS.darkGray,
+      marginLeft: 4,
+    },
+    resourceCardFooter: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      marginTop: 12,
+      paddingTop: 12,
+      borderTopWidth: 1,
+      borderTopColor: COLORS.borderColor,
+    },
+    resourcePrice: {
+      fontSize: 16,
+      fontWeight: '600',
+      color: COLORS.darkBlue,
+    },
+    resourceUrl: {
+      fontSize: 14,
+      color: COLORS.gray,
+      width: '50%',
+    },
+    enhancedEnrollButton: {
+      backgroundColor: COLORS.primary,
+      paddingVertical: 8,
+      paddingHorizontal: 12,
+      borderRadius: 6,
+      flexDirection: 'row',
+      alignItems: 'center',
+    },
+    enrollText: {
+      color: COLORS.white,
+      fontSize: 14,
+      fontWeight: '500',
+    },
+    enhancedVisitButton: {
+      backgroundColor: COLORS.primary,
+      paddingVertical: 8,
+      paddingHorizontal: 12,
+      borderRadius: 6,
+      flexDirection: 'row',
+      alignItems: 'center',
+    },
+    visitText: {
+      color: COLORS.white,
+      fontSize: 14,
+      fontWeight: '500',
+    },
+    enhancedBuyButton: {
+      backgroundColor: COLORS.primary,
+      paddingVertical: 8,
+      paddingHorizontal: 12,
+      borderRadius: 6,
+      flexDirection: 'row',
+      alignItems: 'center',
+    },
+    buyText: {
+      color: COLORS.white,
+      fontSize: 14,
+      fontWeight: '500',
+    },
+    emptyState: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      paddingVertical: 40,
+    },
+    emptyStateText: {
+      fontSize: 16,
+      color: COLORS.gray,
+      marginTop: 16,
+      marginBottom: 16,
+    },
+    retryButton: {
+      backgroundColor: COLORS.primary,
+      paddingVertical: 8,
+      paddingHorizontal: 16,
+      borderRadius: 6,
+    },
+    retryButtonText: {
+      color: COLORS.white,
+      fontSize: 14,
+      fontWeight: '500',
+    },
+    listContainer: {
+      paddingBottom: 20,
+    },
+  });
 
 // Root Navigator that checks auth state
 function RootNavigator() {
