@@ -3,6 +3,7 @@ import { Text, View, TouchableOpacity, FlatList, ActivityIndicator, SafeAreaView
 import { Ionicons } from '@expo/vector-icons';
 import { styles } from '../../../styles/styles';
 import { COLORS } from '../../../styles/Colors';
+import AppHeader from '../../ui/AppHeader';
 
 function SkillResourcesScreen({ route, navigation }) {
   const { skill, domain } = route.params;
@@ -234,15 +235,11 @@ function SkillResourcesScreen({ route, navigation }) {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
-        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
-          <Ionicons name="arrow-back" size={24} color={COLORS.white} />
-        </TouchableOpacity>
-        <View style={styles.logoContainer}>
-          <Text style={styles.logo}>{skill.name}</Text>
-        </View>
-        <View style={{width: 24}}></View>
-      </View>
+      <AppHeader
+        showSearch={false}
+        showBackButton={true}
+        title={skill.name}
+      />
       
       <View style={styles.tabContainer}>
         <TouchableOpacity 
@@ -250,16 +247,13 @@ function SkillResourcesScreen({ route, navigation }) {
           onPress={() => setActiveTab('Courses')}
         >
           <Ionicons 
-            name="book-outline" 
+            name="school-outline" 
             size={20} 
             color={activeTab === 'Courses' ? COLORS.primary : COLORS.gray} 
           />
-          <Text 
-            style={[styles.tabText, activeTab === 'Courses' && styles.activeTabText]}
-          >
-            Courses
-          </Text>
+          <Text style={[styles.tabText, activeTab === 'Courses' && styles.activeTabText]}>Courses</Text>
         </TouchableOpacity>
+        
         <TouchableOpacity 
           style={[styles.tab, activeTab === 'Websites' && styles.activeTab]}
           onPress={() => setActiveTab('Websites')}
@@ -269,55 +263,27 @@ function SkillResourcesScreen({ route, navigation }) {
             size={20} 
             color={activeTab === 'Websites' ? COLORS.primary : COLORS.gray} 
           />
-          <Text 
-            style={[styles.tabText, activeTab === 'Websites' && styles.activeTabText]}
-          >
-            Websites
-          </Text>
+          <Text style={[styles.tabText, activeTab === 'Websites' && styles.activeTabText]}>Websites</Text>
         </TouchableOpacity>
+        
         <TouchableOpacity 
           style={[styles.tab, activeTab === 'Books' && styles.activeTab]}
           onPress={() => setActiveTab('Books')}
         >
           <Ionicons 
-            name="library-outline" 
+            name="book-outline" 
             size={20} 
             color={activeTab === 'Books' ? COLORS.primary : COLORS.gray} 
           />
-          <Text 
-            style={[styles.tabText, activeTab === 'Books' && styles.activeTabText]}
-          >
-            Books
-          </Text>
+          <Text style={[styles.tabText, activeTab === 'Books' && styles.activeTabText]}>Books</Text>
         </TouchableOpacity>
       </View>
       
       <View style={styles.content}>
-        <View style={styles.resourceHeader}>
-          <Text style={styles.subtitle}>Resources to learn {skill.name}</Text>
-          
-          <TouchableOpacity 
-            style={styles.refreshButton}
-            onPress={() => fetchResources(activeTab)}
-          >
-            <Ionicons 
-              name={isSearching ? "refresh-circle" : "refresh"} 
-              size={24} 
-              color={COLORS.primary}
-              style={isSearching ? {opacity: 0.5} : {}}
-            />
-          </TouchableOpacity>
-        </View>
-        
-        {/* Skill information card */}
         <View style={styles.skillInfoCard}>
-          <Ionicons 
-            name={getSolidColor(skill.level) === '#0a8528' ? 'trending-up' : 'stats-chart'} 
-            size={20} 
-            color={getSolidColor(skill.level)} 
-          />
+          <Ionicons name="information-circle-outline" size={20} color={COLORS.primary} />
           <Text style={styles.skillInfoText}>
-            This skill is <Text style={{fontWeight: 'bold', color: getSolidColor(skill.level)}}>{skill.level.toLowerCase()}</Text> for a successful career in {domain.title}.
+            {skill.name} is a {skill.level.toLowerCase()} skill for careers in {domain.title}.
           </Text>
         </View>
         
@@ -325,76 +291,28 @@ function SkillResourcesScreen({ route, navigation }) {
           <View style={styles.loadingContainer}>
             <ActivityIndicator size="large" color={COLORS.primary} />
             <Text style={styles.loadingText}>Finding the best {activeTab.toLowerCase()} for {skill.name}...</Text>
-            <Text style={styles.loadingSubText}>This may take a moment</Text>
           </View>
         ) : (
-          <>
-            {activeTab === 'Courses' && (
-              <FlatList
-                data={resources.Courses}
-                keyExtractor={item => item.id}
-                renderItem={renderCourseItem}
-                showsVerticalScrollIndicator={false}
-                contentContainerStyle={styles.listContainer}
-                ListEmptyComponent={
-                  <View style={styles.emptyState}>
-                    <Ionicons name="school-outline" size={64} color={COLORS.lightGray} />
-                    <Text style={styles.emptyStateText}>No courses found for {skill.name}</Text>
-                    <TouchableOpacity 
-                      style={styles.retryButton}
-                      onPress={() => fetchResources('Courses')}
-                    >
-                      <Text style={styles.retryButtonText}>Retry</Text>
-                    </TouchableOpacity>
-                  </View>
-                }
-              />
-            )}
-            
-            {activeTab === 'Websites' && (
-              <FlatList
-                data={resources.Websites}
-                keyExtractor={item => item.id}
-                renderItem={renderWebsiteItem}
-                showsVerticalScrollIndicator={false}
-                contentContainerStyle={styles.listContainer}
-                ListEmptyComponent={
-                  <View style={styles.emptyState}>
-                    <Ionicons name="globe-outline" size={64} color={COLORS.lightGray} />
-                    <Text style={styles.emptyStateText}>No websites found for {skill.name}</Text>
-                    <TouchableOpacity 
-                      style={styles.retryButton}
-                      onPress={() => fetchResources('Websites')}
-                    >
-                      <Text style={styles.retryButtonText}>Retry</Text>
-                    </TouchableOpacity>
-                  </View>
-                }
-              />
-            )}
-            
-            {activeTab === 'Books' && (
-              <FlatList
-                data={resources.Books}
-                keyExtractor={item => item.id}
-                renderItem={renderBookItem}
-                showsVerticalScrollIndicator={false}
-                contentContainerStyle={styles.listContainer}
-                ListEmptyComponent={
-                  <View style={styles.emptyState}>
-                    <Ionicons name="book-outline" size={64} color={COLORS.lightGray} />
-                    <Text style={styles.emptyStateText}>No books found for {skill.name}</Text>
-                    <TouchableOpacity 
-                      style={styles.retryButton}
-                      onPress={() => fetchResources('Books')}
-                    >
-                      <Text style={styles.retryButtonText}>Retry</Text>
-                    </TouchableOpacity>
-                  </View>
-                }
-              />
-            )}
-          </>
+          <FlatList
+            data={resources[activeTab]}
+            keyExtractor={item => item.id}
+            renderItem={
+              activeTab === 'Courses' ? renderCourseItem :
+              activeTab === 'Websites' ? renderWebsiteItem :
+              renderBookItem
+            }
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={styles.listContainer}
+            ListEmptyComponent={
+              <View style={styles.emptyState}>
+                <Ionicons name="search-outline" size={64} color={COLORS.mediumGray} />
+                <Text style={styles.emptyStateText}>No {activeTab.toLowerCase()} found for {skill.name}</Text>
+                <TouchableOpacity style={styles.retryButton} onPress={() => fetchResources(activeTab)}>
+                  <Text style={styles.retryButtonText}>Try Again</Text>
+                </TouchableOpacity>
+              </View>
+            }
+          />
         )}
       </View>
     </SafeAreaView>

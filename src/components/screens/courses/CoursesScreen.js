@@ -1,7 +1,8 @@
 import React from 'react';
-import { Text, View, TouchableOpacity, FlatList, Image, SafeAreaView } from 'react-native';
+import { Text, View, TouchableOpacity, FlatList, SafeAreaView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { styles } from '../../../styles/styles';
+import AppHeader from '../../ui/AppHeader';
 
 function CoursesScreen({ navigation }) {
   const jobDomains = [
@@ -15,12 +16,11 @@ function CoursesScreen({ navigation }) {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
-        <View style={styles.logoContainer}>
-          <Image source={require('../../../../Images/cAREERbOOSTER.png')} style={styles.logoImage} />
-          <Text style={styles.subtitle}>Career Domains</Text>
-        </View>
-      </View>
+      <AppHeader 
+        showSearch={true}
+        showBackButton={false}
+        showProfile={true}
+      />
       <View style={styles.content}>
         <Text style={styles.subtitle}>Select a domain to explore top skills</Text>
         

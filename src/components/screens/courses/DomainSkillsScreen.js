@@ -3,6 +3,7 @@ import { Text, View, TouchableOpacity, FlatList, ActivityIndicator, SafeAreaView
 import { Ionicons } from '@expo/vector-icons';
 import { styles } from '../../../styles/styles';
 import { COLORS } from '../../../styles/Colors';
+import AppHeader from '../../ui/AppHeader';
 
 function DomainSkillsScreen({ route, navigation }) {
   const { domain } = route.params;
@@ -147,22 +148,11 @@ function DomainSkillsScreen({ route, navigation }) {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
-        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
-          <Ionicons name="arrow-back" size={24} color={COLORS.white} />
-        </TouchableOpacity>
-        <View style={styles.logoContainer}>
-          <Text style={styles.logo}>{domain.title}</Text>
-        </View>
-        <TouchableOpacity onPress={fetchSkills} disabled={isLoading} style={styles.refreshButton}>
-          <Ionicons 
-            name={isLoading ? "sync-circle" : "refresh"} 
-            size={24} 
-            color={COLORS.white} 
-            style={isLoading ? {opacity: 0.7} : {}}
-          />
-        </TouchableOpacity>
-      </View>
+      <AppHeader 
+        showSearch={false} 
+        showBackButton={true} 
+        title={domain.title}
+      />
       
       <View style={styles.content}>
         <View style={styles.titleContainer}>

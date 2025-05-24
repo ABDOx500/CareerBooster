@@ -1,8 +1,9 @@
 import React from 'react';
-import { SafeAreaView, Text, View, TouchableOpacity, ScrollView, Image, ActivityIndicator } from 'react-native';
+import { SafeAreaView, Text, View, TouchableOpacity, ScrollView, ActivityIndicator } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useAuth } from '../../context/AuthContext';
 import { styles } from '../../styles/styles';
+import AppHeader from '../ui/AppHeader';
 
 function ProfileScreen() {
   const { user, logout } = useAuth();
@@ -11,12 +12,7 @@ function ProfileScreen() {
   if (!user) {
     return (
       <SafeAreaView style={styles.container}>
-        <View style={styles.header}>
-          <View style={styles.logoContainer}>
-            <Image source={require('../../../Images/cAREERbOOSTER.png')} style={styles.logoImage} />
-            <Text style={styles.subtitle}>Profile</Text>
-          </View>
-        </View>
+        <AppHeader showSearch={false} showProfile={false} title="Profile" />
         <View style={[styles.content, styles.centerContent]}>
           <ActivityIndicator size="large" color="#0077B5" />
         </View>
@@ -26,12 +22,7 @@ function ProfileScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
-        <View style={styles.logoContainer}>
-          <Image source={require('../../../Images/cAREERbOOSTER.png')} style={styles.logoImage} />
-          <Text style={styles.subtitle}>Profile</Text>
-        </View>
-      </View>
+      <AppHeader showSearch={false} showProfile={false} title="Profile" />
       <ScrollView style={styles.content}>
         {/* Profile Info Card */}
         <View style={styles.profileCard}>

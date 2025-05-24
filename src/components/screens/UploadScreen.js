@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { SafeAreaView, Text, View, TouchableOpacity, TextInput, Image } from 'react-native';
+import { SafeAreaView, Text, View, TouchableOpacity, TextInput } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { styles } from '../../styles/styles';
+import AppHeader from '../ui/AppHeader';
 
 function UploadScreen() {
   const [fileName, setFileName] = useState('');
@@ -14,12 +15,11 @@ function UploadScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
-        <View style={styles.logoContainer}>
-          <Image source={require('../../../Images/cAREERbOOSTER.png')} style={styles.logoImage} />
-          <Text style={styles.subtitle}>CV Analysis</Text>
-        </View>
-      </View>
+      <AppHeader 
+        showSearch={false} 
+        title="CV Analysis" 
+        showBackButton={true}
+      />
       <View style={styles.content}>
         <TouchableOpacity style={styles.uploadBox} onPress={pickFile}>
           <Ionicons name="cloud-upload-outline" size={48} color="#0077B5" />

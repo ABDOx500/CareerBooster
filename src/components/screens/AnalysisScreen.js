@@ -1,7 +1,8 @@
 import React from 'react';
-import { SafeAreaView, Text, View, Image } from 'react-native';
+import { SafeAreaView, Text, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { styles } from '../../styles/styles';
+import AppHeader from '../ui/AppHeader';
 
 function AnalysisScreen() {
   // Replace with actual data from API
@@ -11,12 +12,11 @@ function AnalysisScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
-        <View style={styles.logoContainer}>
-          <Image source={require('../../../Images/cAREERbOOSTER.png')} style={styles.logoImage} />
-          <Text style={styles.subtitle}>Analysis</Text>
-        </View>
-      </View>
+      <AppHeader 
+        showSearch={false} 
+        title="CV Analysis" 
+        showBackButton={true}
+      />
       <View style={styles.content}>
         <View style={styles.card}>
           <Text style={styles.cardHeading}>Match Score</Text>

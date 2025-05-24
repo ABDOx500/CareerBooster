@@ -2,6 +2,7 @@ import React from 'react';
 import { SafeAreaView, Text, View, TouchableOpacity, ScrollView, Image } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { styles } from '../../styles/styles';
+import AppHeader from '../ui/AppHeader';
 
 function HomeScreen({ navigation }) {
   // Mock data for analysis 
@@ -18,16 +19,7 @@ function HomeScreen({ navigation }) {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.dashboardHeader}>        
-        <View style={styles.logoContainer}>          
-          <Image source={require('../../../Images/cAREERbOOSTER.png')} style={styles.logoImage} />        
-        </View>        
-        <TouchableOpacity onPress={() => navigation.navigate('Profile')}>          
-          <View style={styles.headerProfileIcon}>            
-            <Ionicons name="person-circle-outline" size={32} color="#FFFFFF" />          
-          </View>        
-        </TouchableOpacity>      
-      </View>
+      <AppHeader showBackButton={false} showSearch={true} showProfile={true} />
       
       <ScrollView style={styles.content}>
         <Text style={styles.greeting}>Hello, John!</Text>
